@@ -1,0 +1,145 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/bootstrap-theme.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="url.js"></script>
+		 <!-- Include all compiled plugins (below), or include individual files as needed -->
+    	<script src="js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				var _currentURL = new Url(window.location.href);
+				var _user = _currentURL.query.user;
+				var _application = _currentURL.query.app;
+				var _deviceid = _currentURL.query.deviceid;
+				console.log(_user);
+				console.log(_application);
+				console.log(_deviceid);
+				 
+				//alert(_currentURL.query.user);
+				$("#btnApprove").click(function(){
+					console.log(_user);
+					console.log(_application);
+					console.log(_deviceid);
+					
+					//send the octoblu workflow the approval message
+					$.ajax({
+						//substitute you own workflow url here. You can get it from the trigger node "HTTP Post"
+        				//value of you workflow. You can also check out our video on calling a trigger from a 
+        				//.net application here https://www.youtube.com/watch?v=Se4NRps9Gh8
+						url:"https://triggers.octoblu.com/flows/{flowid}/triggers/{triggerid}",
+						type:"POST",
+						data:{type:"approve",user:_user,application:_application,monitordeviceid:_deviceid},
+						success:function(){
+							console.log("The event was called successfully");
+						},
+						error:function( xhr,status,error){
+							console.log("Error!");
+							console.log("status:" + status);
+							console.log("error:" + error);
+						},
+						complete:function(xnr,status){
+							console.log("Status:" + status);
+						}
+					});
+					/*
+					12958025-016d-4fde-9a7d-7d64c1c5158d
+					{
+						type:"request or approve or deny",
+						user:"username",
+						application:"app name",
+						monitordeviceid,"UUID"
+					}
+					*/
+					
+					
+				});
+				$("#btnDeny").click(function(){
+					//send the deny message to the octoblu workflow
+				});
+			});
+		</script>
+	</head>
+	<body role="document">
+		<!-- Fixed navbar -->
+	    <nav class="navbar navbar-inverse navbar-fixed-top">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="navbar-brand" href="#">Workflow Example</a>
+	        </div>
+	        <div id="navbar" class="navbar-collapse collapse">
+	          <ul class="nav navbar-nav">
+	            <li><a href="http://developer.citrix.com">Citrix Developer</a></li>
+	            <li><a href="http://www.octoblu.com">Octoblu</a></li>
+	          </ul>
+	        </div><!--/.nav-collapse -->
+	      </div>
+	    </nav>
+
+		<div class="container theme-showcase" role="main">
+			<div class="jumbotron">
+				<h3>Storefront/Octoblu Workflow Integration Example</h3>
+				<p>
+					This is a example page (to be used with the Storefront workflow example) that
+					shows to the allow a manager to approve/deny a request for an application and then call
+					and Octoblu workflow
+				</p>
+			</div>
+		
+			<div class="page-header">
+				<h3>Would you like to approve the request?</h3>
+			</div>
+			<p>
+				<button id="btnApprove" type="button" class="btn btn-lg btn-success">Approve Application</button>
+				<button id="btnDeny"  type="button" class="btn btn-lg btn-danger">Deny Application</button>	
+			</p>
+			
+			<br />
+			<br />
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Citrix Developer</h3>
+						</div>
+						<div class="panel-body">
+							For more information on Citrix Developer and building with Citrix SDKs <a href="http://developer.citrix.com">Click Here.</a>
+						</div>
+					</div>
+				</div><!-- /.col-sm-4 -->
+				<div class="col-sm-4">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Citrix Storefront</h3>
+						</div>
+						<div class="panel-body">
+							For more information on Citrix Storefront <a href="http://blogs.citrix.com/author/richardha">Click Here.</a>
+						</div>
+					</div>
+				</div><!-- /.col-sm-4 -->
+				<div class="col-sm-4">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Citrix Octoblu</h3>
+						</div>
+						<div class="panel-body">
+							For more information on Citrix Octoblu <a href="http://www.octoblu.com">Click Here.</a>
+						</div>
+					</div>
+				</div><!-- /.col-sm-4 -->
+			</div>
+	  
+		</div> <!-- main div -->
+		
+		 
+	</body>
+</html>
